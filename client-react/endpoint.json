@@ -1,0 +1,267 @@
+{
+  "description": [
+    "Названия ендпоинтов и полей можешь переделать",
+    "события можно добавить в избранное",
+    "так же интересно подумать подумать о запросе событий, получение уведомлений а если есть возможность условно подписаться на событие о получение уведмолений или если нет, то по старинке"
+  ],
+  "endpoints": {
+    "get": {
+      "events-today": {
+        "method": "GET",
+        "req": {
+          "user_token": "token | null"
+        },
+        "res": [
+          {
+            "id": "uuid",
+            "title": "string",
+            "preview": "image",
+            "time": "example 11:00, 12:33",
+            "type": "all, staff, ...",
+            "location": "string",
+            "is_liked": "не уверен, потому что пользователь может быть не авторизован",
+            "category": "string[]"
+          }
+        ]
+      },
+      "events-soon": {
+        "method": "GET",
+        "description": "События можно искать по месяцу или же по месяцу и конкретной дате",
+        "req": {
+          "year": "number",
+          "month": "number",
+          "date": "number | null",
+          "user_token": "token | null"
+        },
+        "res": [
+          {
+            "id": "uuid",
+            "title": "string",
+            "preview": "image",
+            "time": "example 11:00, 12:33",
+            "type": "all, staff, ...",
+            "location": "string",
+            "is_liked": "не уверен, потому что пользователь может быть не авторизован",
+            "category": "string[]"
+          }
+        ]
+      },
+      "event/:id": {
+        "description": [
+          "возможно некоторые поля стоит вынести в отдельный ендпоинт",
+          "похожие соббытия могут быть взяты из прошлого",
+          "если организатор ректор, то нужны так же деканы всех факультетов",
+          "с некоторыми организаторами можно связаться, но наверное это потом сделать"
+        ],
+        "method": "GET",
+        "req": {
+          "user_token": "token | null"
+        },
+        "res": {
+          "id": "uuid",
+          "image": "img",
+          "title": "string",
+          "description": "string",
+          "is_liked": "bool | smth",
+          "location": "string",
+          "start_time": "example 11:30, 12:30, 10:25",
+          "qr_navigation": "qr img",
+          "date": "Date",
+          "similar_categories": [
+            {
+              "id": "uuid",
+              "title": "string"
+            }
+          ],
+          "similar_events": [
+            {
+              "id": "uuid",
+              "preview": "img",
+              "title": "string",
+              "date": "Date"
+            }
+          ],
+          "organizers": [
+            {
+              "id": "uuid",
+              "photo": "img",
+              "name": "string",
+              "surname": "string",
+              "patronymic": "string",
+              "type": "Преподователь | Ректор | Декан | ...",
+              "can_message": "bool"
+            }
+          ],
+          "comments": [
+            {
+              "id": "uuid",
+              "photo": "img",
+              "name": "string",
+              "surname": "string",
+              "comment": "string"
+            }
+          ]
+        }
+      },
+      "event/:id/comments": {
+        "method": "GET",
+        "res": [
+          {
+            "id": "uuid",
+            "photo": "img",
+            "name": "string",
+            "surname": "string",
+            "comment": "string"
+          }
+        ]
+      },
+      "event/:id/gallery": {
+        "method": "GET",
+        "description": "Понятия не имею как будет выглядеть, но есть такая кнопка"
+      },
+      "event/notification": {
+        "method": "GET",
+        "req": {
+          "token": "token",
+          "user_id": "uuid"
+        },
+        "res": [
+          {
+            "id": "uuid",
+            "xz": "..."
+          }
+        ]
+      }
+    },
+    "post": {
+      "event/:id/comment": {
+        "method": "POST",
+        "req": {
+          "user_id": "uuid",
+          "comment": "string"
+        }
+      },
+      "user/login": {
+        "method": "POST",
+        "description": "Возможно тоже пока не надо",
+        "req": {
+          "login": "string",
+          "password": "string"
+        },
+        "res": {
+          "token": "token",
+          "id": "uuid",
+          "name": "string",
+          "surname": "string",
+          "avatar": "img",
+          "date_birth": "Date",
+          "gender": "man | women, Ваще не знаю, что это тут делает, лично я генератор субатомных частиц",
+          "type": "user | admin | ...",
+          "theme": "оно будет пока хз как описать",
+          "email": "email",
+          "password": "хмм, не знаю зачем оно тут, по логике его можно сохранять при входе, но если с разных устройств, то нет",
+          "is_notify": "bool"
+        }
+      },
+      "user/logout": {
+        "method": "POST",
+        "req": {
+          "token": "token"
+        },
+        "res": {
+          "xz": "xz"
+        }
+      },
+      "event/create": {
+        "method": "POST",
+        "description": "с этим позже скину, надо у Андрея уточнить некоторые моменты"
+      }
+    },
+    "patch": {
+      "user/change-email": {
+        "method": "PATCH | POST",
+        "req": {
+          "token": "token",
+          "user_id": "uuid",
+          "old_email": "email",
+          "new_email": "email"
+        },
+        "res": {
+          "is_success": "bool",
+          "xz": "..."
+        }
+      },
+      "user/change-password": {
+        "method": "PATCH | POST",
+        "req": {
+          "token": "token",
+          "user_id": "uuid",
+          "old_password": "string",
+          "new_password": "string"
+        },
+        "res": {
+          "xz": "..."
+        }
+      },
+      "user/change-info": {
+        "method": "PATCH | POST",
+        "req": {
+          "token": "token",
+          "id": "uuid",
+          "name": "string | null",
+          "surname": "string | null",
+          "gender": "gender | null, серьезно????",
+          "date_birth": "Date | null"
+        },
+        "res": {
+          "xz": "..."
+        }
+      },
+      "user/change-avatar": {
+        "method": "PATCH | POST",
+        "req": {
+          "token": "token",
+          "id": "uuid",
+          "avatar": "img"
+        },
+        "res": {
+          "xz": "..."
+        }
+      },
+      "user/change-theme": {
+        "method": "PATCH",
+        "req": {
+          "token": "token",
+          "id": "uuid",
+          "theme": "тут тоже надо подумать, либо айди будет у темы, либо название, либо сразу цветовой набор"
+        },
+        "res": {
+          "theme": "..."
+        }
+      },
+      "notification/read": {
+        "method": "PATCH",
+        "req": {
+          "token": "token",
+          "user_id": "uuid",
+          "notification_id": "uuid"
+        },
+        "res": {
+          "xz": "..."
+        }
+      }
+    },
+    "delete": {
+      "user/delete": {
+        "method": "DELETE",
+        "req": {
+          "token": "token",
+          "id": "uuid"
+        },
+        "res": {
+          "xz": "..."
+        }
+      }
+    }
+  }
+}

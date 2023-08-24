@@ -1,0 +1,25 @@
+.rzd {
+  position: relative;
+
+
+
+  .rzd-container {
+    margin-top: 200px;
+
+    position: relative;
+  }
+}
+
+.path-sector {
+  position: absolute;
+  top: 150px;
+
+  width: 100px;
+  height: 3px;
+
+  border-radius: 2px;
+
+  transform-origin: top left;
+
+  background: #000;
+}

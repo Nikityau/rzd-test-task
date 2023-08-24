@@ -1,0 +1,45 @@
+{
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
+  "include": [
+    "./src/**/*",
+    "./env.d.ts"
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "exactOptionalPropertyTypes": false,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
+    "noImplicitThis": false,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedParameters": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": false,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "ES5",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "rootDir": "./src",
+    "outDir": "./dist/",
+    "baseUrl": "./src",
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+
+    "declaration": false
+  },
+}
