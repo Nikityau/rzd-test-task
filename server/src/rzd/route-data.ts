@@ -1,6 +1,6 @@
 import {v4} from "uuid";
 
-interface RZDPath {
+export interface RZDPathSector {
     id: string,
     pointName: string,
     sectorName?: string,
@@ -8,7 +8,7 @@ interface RZDPath {
 }
 
 export interface RZDGraph {
-    [name: string]: RZDPath[]
+    [name: string]: RZDPathSector[]
 }
 
 interface RZDPathGraph {
