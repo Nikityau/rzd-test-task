@@ -1,3 +1,7 @@
+body {
+  background: #000;
+}
+
 .rzd {
   position: relative;
 
@@ -21,5 +25,9 @@
 
   transform-origin: top left;
 
-  background: #000;
+  background: #fff;
+}
+
+.path-sector_busy {
+  background: purple;
 }

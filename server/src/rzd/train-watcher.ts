@@ -1,100 +1,10 @@
-import {v4} from "uuid";
 import {produce} from "immer";
 import {dataGraph, RZDGraph, RZDPathSector} from "./route-data";
 import {Train, train} from "./train-data";
 import {BusyPath} from "./busy-path";
+import {random} from "./helpers/random";
+import {Logger} from "../logger/logger";
 
-const random = (start: number, end: number) => {
-    return Math.ceil(Math.random() * end - start)
-}
-
-class TrainBuilder {
-    train: Train = null
-
-    private checkOnCreate() {
-        if(this.train == null) {
-            this.train = {
-                id: v4(),
-                numOfWagons: 1,
-                trainName: null,
-                trainUNumber: null
-            }
-        }
-    }
-
-    setId(id: string) {
-        this.checkOnCreate()
-
-        this.train.id = id
-
-        return this
-    }
-
-    setNumOfWagon(num: number) {
-        this.checkOnCreate()
-
-        this.train.numOfWagons = num
-
-        return this
-    }
-
-    setTrainUNumber(unumber: string) {
-        this.checkOnCreate()
-
-        this.train.trainUNumber = unumber
-
-        return this
-    }
-
-    setTrainName(name: string) {
-        this.checkOnCreate()
-
-        this.train.trainName = name
-
-        return this
-    }
-
-    build() {
-        this.checkOnCreate()
-
-        return this.train
-    }
-}
-
-export class RailwayWatcher {
-    private trainWatcher: TrainWatcher = new TrainWatcher()
-    private trainBuilder: TrainBuilder = new TrainBuilder()
-    private trainQueue: Train[] = []
-
-    constructor() {
-        this.nextTrain = this.nextTrain.bind(this)
-
-        this.trainWatcher.cbTrainExit = this.nextTrain
-    }
-
-    private nextTrain() {
-        const train = this.trainQueue.shift()
-        this.trainWatcher.setTrain(train)
-    }
-
-    private generateTrain() {
-        if(this.trainQueue.length >= 5) return
-
-        this.trainQueue.push({
-            id: v4(),
-            trainName: "Eagle",
-            trainUNumber: "A232",
-            numOfWagons: random(0, 4)
-        })
-    }
-
-    watch() {
-        this.trainWatcher.watch()
-        setInterval(() => {
-            this.generateTrain()
-        }, 10000)
-    }
-}
 
 export class TrainWatcher {
     private routes: RZDGraph = dataGraph.pathGraph
@@ -103,6 +13,12 @@ export class TrainWatcher {
     private busyPath: BusyPath[] = []
 
     cbTrainExit = null
+    private onPathUpd: (any) => void
+
+    constructor(onPathUpd: (any) => void) {
+        this.onPathUpd = onPathUpd
+    }
+
     setTrain(train: Train) {
         this.train = train
     }
@@ -137,11 +53,18 @@ export class TrainWatcher {
         this.checkBusyPath()
         nextPoint = route.pointName
 
-        console.log('------------------------')
-        console.log('next point', nextPoint)
-        console.log('train path', this.trainPath)
-        console.log('busy path', this.busyPath)
-        console.log('-------------------------')
+        Logger.log('------------------------')
+        Logger.log('next point', nextPoint)
+        Logger.log('train path', this.trainPath)
+        Logger.log('busy path', this.busyPath)
+        Logger.log('-------------------------')
+
+        this.onPathUpd({
+            route: this.routes,
+            train: this.train,
+            trainPath: this.trainPath,
+            busyPath: this.busyPath
+        })
 
         return nextPoint
     }
@@ -162,6 +85,13 @@ export class TrainWatcher {
             }
 
             return draft
+        })
+
+        this.onPathUpd({
+            route: this.routes,
+            train: this.train,
+            trainPath: this.trainPath,
+            busyPath: this.busyPath
         })
 
         if (this.busyPath.length == 0) {
