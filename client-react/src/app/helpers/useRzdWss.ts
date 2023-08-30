@@ -34,7 +34,7 @@ export const useRzdWss = () => {
     const [data, setData] = useState<WssData>(null)
 
     useEffect(() => {
-        const wss = io("http://localhost:4000")
+        const wss = io("http://localhost:31300")
 
         wss.on('railway', (args) => {
             setData(args)
