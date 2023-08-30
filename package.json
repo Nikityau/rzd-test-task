@@ -8,7 +8,7 @@
     "ifp": "cd ./client-react && npm i",
     "icp": "cd ./server && npm i",
     "dev:f": "cd ./client-react && npm run dev",
-    "dev:s": "cd ./server && npm run dev"
+    "dev:s": "cd ./server && npm run start:ts"
   },
   "keywords": [],
   "author": "",
